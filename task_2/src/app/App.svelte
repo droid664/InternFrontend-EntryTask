@@ -1,4 +1,7 @@
 <script lang="ts">
+  import Converter from '../widgets/Converter/ui/Converter.svelte'
 </script>
 
-<main></main>
+<main>
+  <Converter />
+</main>
