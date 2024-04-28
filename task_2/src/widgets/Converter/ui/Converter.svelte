@@ -4,22 +4,45 @@
   import { get } from 'svelte/store'
   import { Select } from '../../../shared'
   import { parseCurrency } from '../model/parseCurrency'
-  import { fetchGetPairConversion } from '../model/pariConversion.store'
+  import { fetchGetPairConversion, pairData } from '../model/pariConversion.store'
 
   let codesList: string[] = []
   let selectedFirst: string = ''
   let selectedSecond: string = ''
-  let currencyFirst: string = ''
-  let currencySecond: string = ''
   let sumFirst: number = 1
   let sumSecond: number = 0
 
-  const updateSelectedFirst = (event: CustomEvent<string>) => {
+  const updateSelectedFirst = async (event: CustomEvent<string>) => {
     selectedFirst = event.detail
+
+    await changeSelectedCurrency()
+    updateSecondValue()
   }
 
-  const updateSelectedSecond = (event: CustomEvent<string>) => {
+  const updateSelectedSecond = async (event: CustomEvent<string>) => {
     selectedSecond = event.detail
+
+    await changeSelectedCurrency()
+    updateFirstValue()
+  }
+
+  const updateFirstValue = () => {
+    sumFirst = calcCurrencyValue(sumSecond)
+  }
+
+  const updateSecondValue = () => {
+    sumSecond = calcCurrencyValue(sumFirst)
+  }
+
+  const calcCurrencyValue = (value: number) => {
+    return get(pairData).conversion_rate * value
+  }
+
+  const changeSelectedCurrency = async () => {
+    const first = parseCurrency(selectedFirst)
+    const second = parseCurrency(selectedSecond)
+
+    await fetchGetPairConversion(first, second)
   }
 
   onMount(async () => {
@@ -29,16 +52,14 @@
 
     selectedFirst = codesList[0]
     selectedSecond = codesList[1]
-    currencyFirst = parseCurrency(selectedFirst)
-    currencySecond = parseCurrency(selectedSecond)
 
-    await fetchGetPairConversion(currencyFirst, currencySecond)
+    await changeSelectedCurrency()
+
+    updateSecondValue()
   })
 
   $: filteredListFirst = codesList.filter((item) => item !== selectedSecond)
   $: filteredListSecond = codesList.filter((item) => item !== selectedFirst)
-  $: currencyFirst = parseCurrency(selectedFirst)
-  $: currencySecond = parseCurrency(selectedSecond)
 </script>
 
 <div class="converter">
@@ -52,7 +73,12 @@
           options={filteredListFirst}
           on:change={updateSelectedFirst}
         />
-        <input type="text" class="form-control" bind:value={sumFirst} />
+        <input
+          type="text"
+          class="form-control"
+          bind:value={sumFirst}
+          on:input={() => updateSecondValue()}
+        />
       </div>
       <div class="converter__grid-item">
         <h2>{selectedSecond}</h2>
@@ -61,7 +87,12 @@
           options={filteredListSecond}
           on:change={updateSelectedSecond}
         />
-        <input type="text" class="form-control" bind:value={sumSecond} />
+        <input
+          type="text"
+          class="form-control"
+          bind:value={sumSecond}
+          on:input={() => updateFirstValue()}
+        />
       </div>
     </div>
   {/if}
