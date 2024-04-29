@@ -27,15 +27,11 @@
   }
 
   const updateFirstValue = () => {
-    sumFirst = calcCurrencyValue(sumSecond)
+    sumFirst = sumSecond / get(pairData).conversion_rate
   }
 
   const updateSecondValue = () => {
-    sumSecond = calcCurrencyValue(sumFirst)
-  }
-
-  const calcCurrencyValue = (value: number) => {
-    return get(pairData).conversion_rate * value
+    sumSecond = sumFirst * get(pairData).conversion_rate
   }
 
   const changeSelectedCurrency = async () => {
