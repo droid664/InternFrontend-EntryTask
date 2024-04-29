@@ -101,6 +101,7 @@
             class="form-control"
             bind:value={sumFirst}
             on:input={() => updateSecondValue()}
+            inputmode="numeric"
           />
         </div>
         <div class="col-6">
@@ -115,6 +116,7 @@
             class="form-control"
             bind:value={sumSecond}
             on:input={() => updateFirstValue()}
+            inputmode="numeric"
           />
         </div>
       </div>
