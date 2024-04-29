@@ -59,37 +59,39 @@
 </script>
 
 <div class="converter">
-  <h1>Converter</h1>
-  {#if codesList.length}
-    <div class="converter__grid">
-      <div class="converter__grid-item">
-        <h2>{selectedFirst}</h2>
-        <Select
-          selected={selectedFirst}
-          options={filteredListFirst}
-          on:change={updateSelectedFirst}
-        />
-        <input
-          type="text"
-          class="form-control"
-          bind:value={sumFirst}
-          on:input={() => updateSecondValue()}
-        />
+  <div class="container">
+    <h1>Converter</h1>
+    {#if codesList.length && selectedFirst && selectedSecond}
+      <div class="row">
+        <div class="col-6">
+          <h2>{selectedFirst}</h2>
+          <Select
+            selected={selectedFirst}
+            options={filteredListFirst}
+            on:change={updateSelectedFirst}
+          />
+          <input
+            type="text"
+            class="form-control"
+            bind:value={sumFirst}
+            on:input={() => updateSecondValue()}
+          />
+        </div>
+        <div class="col-6">
+          <h2>{selectedSecond}</h2>
+          <Select
+            selected={selectedSecond}
+            options={filteredListSecond}
+            on:change={updateSelectedSecond}
+          />
+          <input
+            type="text"
+            class="form-control"
+            bind:value={sumSecond}
+            on:input={() => updateFirstValue()}
+          />
+        </div>
       </div>
-      <div class="converter__grid-item">
-        <h2>{selectedSecond}</h2>
-        <Select
-          selected={selectedSecond}
-          options={filteredListSecond}
-          on:change={updateSelectedSecond}
-        />
-        <input
-          type="text"
-          class="form-control"
-          bind:value={sumSecond}
-          on:input={() => updateFirstValue()}
-        />
-      </div>
-    </div>
-  {/if}
+    {/if}
+  </div>
 </div>
