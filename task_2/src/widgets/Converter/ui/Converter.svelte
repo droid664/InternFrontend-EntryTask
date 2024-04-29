@@ -41,6 +41,30 @@
     await fetchGetPairConversion(first, second)
   }
 
+  const filterInputValue = (value: string) => {
+    let newVal = value.replace(/[^0-9.]/g, '')
+
+    if (newVal.length >= 15) {
+      newVal = newVal.slice(0, 15)
+    }
+
+    if ((newVal.match(/\./g) || []).length > 1) {
+      let dotCount = 0
+      newVal = newVal
+        .split('')
+        .filter((char) => {
+          if (char === '.') {
+            dotCount++
+            return dotCount <= 1
+          }
+          return true
+        })
+        .join('')
+    }
+
+    return newVal
+  }
+
   onMount(async () => {
     await fetchGetCodes()
 
@@ -56,6 +80,8 @@
 
   $: filteredListFirst = codesList.filter((item) => item !== selectedSecond)
   $: filteredListSecond = codesList.filter((item) => item !== selectedFirst)
+  $: sumFirst = Number(filterInputValue(String(sumFirst)))
+  $: sumSecond = Number(filterInputValue(String(sumSecond)))
 </script>
 
 <div class="converter">
