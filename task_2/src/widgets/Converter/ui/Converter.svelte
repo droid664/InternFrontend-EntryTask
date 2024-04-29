@@ -91,7 +91,7 @@
     <h1>Converter</h1>
     {#if codesList.length && selectedFirst && selectedSecond}
       <div class="row">
-        <div class="col-6">
+        <div class="col-md-6 mb-3 mb-md-0">
           <h2>{selectedFirst}</h2>
           <Select
             selected={selectedFirst}
@@ -106,7 +106,7 @@
             inputmode="numeric"
           />
         </div>
-        <div class="col-6">
+        <div class="col-md-6">
           <h2>{selectedSecond}</h2>
           <Select
             selected={selectedSecond}
