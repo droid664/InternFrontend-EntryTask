@@ -91,8 +91,8 @@
     <h1>Converter</h1>
     {#if codesList.length && selectedFirst && selectedSecond}
       <div class="row">
-        <div class="col-md-6 mb-3 mb-md-0">
-          <h2>{selectedFirst}</h2>
+        <div class="col-md-6 d-flex flex-column mb-3 mb-md-0">
+          <h2 class="mb-auto pb-3">{selectedFirst}</h2>
           <Select
             selected={selectedFirst}
             options={filteredListFirst}
@@ -106,8 +106,8 @@
             inputmode="numeric"
           />
         </div>
-        <div class="col-md-6">
-          <h2>{selectedSecond}</h2>
+        <div class="col-md-6 d-flex flex-column">
+          <h2 class="mb-auto pb-3">{selectedSecond}</h2>
           <Select
             selected={selectedSecond}
             options={filteredListSecond}
