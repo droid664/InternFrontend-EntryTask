@@ -9,8 +9,8 @@
   let codesList: string[] = []
   let selectedFirst: string = ''
   let selectedSecond: string = ''
-  let sumFirst: number = 1
-  let sumSecond: number = 0
+  let sumFirst: string = '1'
+  let sumSecond: string = '0'
 
   const updateSelectedFirst = async (event: CustomEvent<string>) => {
     selectedFirst = event.detail
@@ -27,11 +27,11 @@
   }
 
   const updateFirstValue = () => {
-    sumFirst = sumSecond / get(pairData).conversion_rate
+    sumFirst = String(Number(sumSecond) / get(pairData).conversion_rate)
   }
 
   const updateSecondValue = () => {
-    sumSecond = sumFirst * get(pairData).conversion_rate
+    sumSecond = String(Number(sumFirst) * get(pairData).conversion_rate)
   }
 
   const changeSelectedCurrency = async () => {
@@ -48,7 +48,9 @@
       newVal = newVal.slice(0, 15)
     }
 
-    if ((newVal.match(/\./g) || []).length > 1) {
+    let dots = newVal.match(/\./g)
+
+    if (dots && dots.length > 1) {
       let dotCount = 0
       newVal = newVal
         .split('')
@@ -80,8 +82,8 @@
 
   $: filteredListFirst = codesList.filter((item) => item !== selectedSecond)
   $: filteredListSecond = codesList.filter((item) => item !== selectedFirst)
-  $: sumFirst = Number(filterInputValue(String(sumFirst)))
-  $: sumSecond = Number(filterInputValue(String(sumSecond)))
+  $: sumFirst = filterInputValue(sumFirst)
+  $: sumSecond = filterInputValue(sumSecond)
 </script>
 
 <div class="converter">
